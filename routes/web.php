@@ -22,8 +22,14 @@ Route::get('/', function () {
 Route::post('/posts/{post}/comment',[PostController::class,'storeComment'])
     ->name('posts.storeComment')
     ->middleware('auth');
+
+Route::post('/posts/{post}/like',[PostController::class,'markAsFavourite'])
+    ->name('posts.markAsFavourite')
+    ->middleware('auth');
+
 Route::resource('posts', PostController::class)
     ->name('index','dashboard');
+//Route::resource('comments', $controller)
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

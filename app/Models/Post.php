@@ -17,7 +17,12 @@ class Post extends Model
     public function comments(){
         return $this->hasMany(Comment::class);
     }
-    public function postLikes(){
-        return $this->belongsToMany(Like::class,'likes','post_id');
+
+    public function likes(){
+        return $this->belongsToMany(User::class,'likes');
+    }
+
+    public function isLikedByUser(){
+        return $this->likes()->where('user_id',auth()->id())->exists();
     }
 }

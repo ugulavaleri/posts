@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->string('title');
             $table->text('post');
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
 
             $table->timestamps();
         });

@@ -11,7 +11,14 @@
                 <div class="max-w-3xl mx-auto p-5 text-slate-50 font-medium mb-4">
                     <div class="font-bold text-xl mb-1 flex justify-between">
                         <p>{{ $post->title }}</p>
-                        <button class="text-sm">Mark As Favourite ⭐</button>
+                        <form action="{{ route('posts.markAsFavourite', $post) }}" method="POST">
+                            @csrf
+                            @if(!$post->isLikedByUser())
+                                <button class="text-sm">Mark As Favourite ⭐</button>
+                            @else
+                                <button class="text-sm">Marked As Favourite 💫</button>
+                            @endif
+                        </form>
                     </div>
                     <div class="text-xs text-slate-500">
                         <span>writer - {{ $post->user->name }}</span>
@@ -36,7 +43,8 @@
                                     </div>
                                     <div class="mt-3 flex justify-end items-center gap-2">
                                         <span>0 👤</span>
-                                        <button class="text-sm px-3 py-1 bg-amber-100 rounded-2xl text-slate-500">like</button>
+                                        <button class="text-sm px-3 py-1 bg-amber-100 rounded-2xl text-slate-500">like
+                                        </button>
                                     </div>
                                 </li>
                             @endforeach

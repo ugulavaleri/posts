@@ -43,6 +43,20 @@ class PostController extends Controller
 
         return redirect()->route('dashboard');
     }
+    public function markAsFavourite(Request $request,Post $post){
+        if(!auth()->user()->likes()->where('post_id', $post->id)->exists()){
+            $post->likes()->attach([
+                'user_id' => auth()->id()
+            ]);
+        }else{
+            $like = $post->likes()->where('user_id',auth()->id());
+            dd($like);
+            $like->delete();
+        }
+//        dd();
+
+        return redirect()->route('dashboard');
+    }
 
     /**
      * Display the specified resource.
