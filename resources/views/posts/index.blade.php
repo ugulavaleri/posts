@@ -13,7 +13,7 @@
                         <p>{{ $post->title }}</p>
                         <form action="{{ route('posts.markAsFavourite', $post) }}" method="POST">
                             @csrf
-                            @if(!$post->isLikedByUser())
+                            @if(!$post->isMarkedAsAFavouritePost())
                                 <button class="text-sm">Mark As Favourite ⭐</button>
                             @else
                                 <button class="text-sm">Marked As Favourite 💫</button>

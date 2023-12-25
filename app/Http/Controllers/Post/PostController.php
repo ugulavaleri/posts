@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with(['comments.user','user'])->get();
+//        dd(auth()->user()->favouritePosts);
         return view('posts.index',compact('posts'));
     }
 
@@ -44,17 +46,13 @@ class PostController extends Controller
         return redirect()->route('dashboard');
     }
     public function markAsFavourite(Request $request,Post $post){
-        if(!auth()->user()->likes()->where('post_id', $post->id)->exists()){
-            $post->likes()->attach([
+        if(!auth()->user()->favouritePosts()->where('post_id', $post->id)->exists()){
+            $post->favourites()->attach([
                 'user_id' => auth()->id()
             ]);
         }else{
-            $like = $post->likes()->where('user_id',auth()->id());
-            dd($like);
-            $like->delete();
+            $post->favourites()->where('user_id',auth()->id())->detach();
         }
-//        dd();
-
         return redirect()->route('dashboard');
     }
 

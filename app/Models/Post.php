@@ -17,12 +17,14 @@ class Post extends Model
     public function comments(){
         return $this->hasMany(Comment::class);
     }
-
-    public function likes(){
-        return $this->belongsToMany(User::class,'likes');
+    public function favourites(){
+        return $this->belongsToMany(User::class,'favourites');
     }
 
-    public function isLikedByUser(){
-        return $this->likes()->where('user_id',auth()->id())->exists();
+    public function usersWhoMarkAsAFavourite(){
+        return $this->belongsToMany(User::class,'favourites');
+    }
+    public function isMarkedAsAFavouritePost(){
+        return $this->favourites()->where('user_id',auth()->id())->exists();
     }
 }
