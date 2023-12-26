@@ -1,8 +1,10 @@
 <?php
 
+    use App\Http\Controllers\FollowerController;
     use App\Http\Controllers\Post\PostController;
     use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+    use App\Http\Controllers\User\UserController;
+    use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +29,16 @@ Route::get('/comments/{comment}/likes',[PostController::class,'usersWhoLikeComme
     ->name('posts.usersWhoLikeComment')
     ->middleware('auth');
 
+Route::post('/user/{user}/follow',[FollowerController::class,'follow'])
+    ->name('users.follow')
+    ->middleware('auth');
+
 Route::post('/posts/{post}/comment/{comment}',[PostController::class,'likeComment'])
     ->name('posts.likeComment')
+    ->middleware('auth');
+
+Route::resource('users', UserController::class)
+    ->only('show')
     ->middleware('auth');
 
 Route::post('/posts/{post}/like',[PostController::class,'markAsFavourite'])

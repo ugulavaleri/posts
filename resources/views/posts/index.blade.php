@@ -38,7 +38,7 @@
                                         @endif
                                     </div>
                                     <div class="text-slate-500 text-xs">
-                                        <span>{{ $comment->user->name }}</span>
+                                        <a href="{{ route("users.show", $comment->user) }}">{{ $comment->user->name }}</a>
                                         <span class="ml-3">{{ $comment->created_at->diffForHumans() }}</span>
                                     </div>
                                     <div class="mt-3 flex justify-end items-center gap-2">

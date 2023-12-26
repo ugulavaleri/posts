@@ -63,4 +63,18 @@
             return $this->belongsToMany(Comment::class, 'comment_user', 'user_id', 'comment_id');
         }
 
+        // followers
+        public function followers()
+        {
+            return $this->belongsToMany(User::class, 'follower_user', 'user_id', 'follower_id');
+        }
+
+        public function followings()
+        {
+            return $this->belongsToMany(User::class, 'follower_user', 'follower_id', 'user_id');
+        }
+
+        public function haveAlreadyFollowed(){
+            return $this->followers->contains(auth()->id());
+        }
     }
