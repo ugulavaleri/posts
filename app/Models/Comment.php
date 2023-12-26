@@ -19,4 +19,12 @@ class Comment extends Model
     public function post(){
         return $this->belongsTo(Post::class);
     }
+
+    public function usersWhoLikeThisComment(){
+        return $this->belongsToMany(User::class);
+    }
+
+    public function isLikedByCurrentUser(){
+        return $this->usersWhoLikeThisComment->contains(auth()->id());
+    }
 }

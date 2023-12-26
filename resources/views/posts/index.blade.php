@@ -42,9 +42,22 @@
                                         <span class="ml-3">{{ $comment->created_at->diffForHumans() }}</span>
                                     </div>
                                     <div class="mt-3 flex justify-end items-center gap-2">
-                                        <span>0 👤</span>
-                                        <button class="text-sm px-3 py-1 bg-amber-100 rounded-2xl text-slate-500">like
-                                        </button>
+                                        <form action="{{ route('posts.usersWhoLikeComment',$comment) }}">
+                                            @csrf
+                                            <button>{{ $comment->users_who_like_this_comment_count }} 👤</button>
+                                        </form>
+                                        <form action="{{ route('posts.likeComment', ['post' => $post, 'comment' => $comment]) }}" method="POST">
+                                            @csrf
+                                            @if(!$comment->isLikedByCurrentUser())
+                                                <button class="text-sm px-3 py-1 bg-amber-100 rounded-2xl text-slate-500">
+                                                    like
+                                                </button>
+                                            @else
+                                                <button class="text-sm px-3 py-1 bg-amber-100 rounded-2xl text-slate-500">
+                                                    Unlike
+                                                </button>
+                                            @endif
+                                        </form>
                                     </div>
                                 </li>
                             @endforeach

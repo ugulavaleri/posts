@@ -9,22 +9,17 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $table = 'posts';
-
     public function user(){
         return $this->belongsTo(User::class);
     }
     public function comments(){
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)
+            ->withCount(['usersWhoLikeThisComment']);
     }
-    public function favourites(){
-        return $this->belongsToMany(User::class,'favourites');
-    }
-
     public function usersWhoMarkAsAFavourite(){
         return $this->belongsToMany(User::class,'favourites');
     }
     public function isMarkedAsAFavouritePost(){
-        return $this->favourites()->where('user_id',auth()->id())->exists();
+        return $this->usersWhoMarkAsAFavourite->contains(auth()->id());
     }
 }
