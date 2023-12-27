@@ -22,6 +22,17 @@
             return view('posts.index', compact('posts'));
         }
 
+        public function markAsFavourite(Request $request, Post $post)
+        {
+            if (!auth()->user()->favouritePosts->contains($post->id)) {
+                $post->usersWhoMarkAsAFavourite()->attach(auth()->id());
+            } else {
+                $post->usersWhoMarkAsAFavourite()->detach(auth()->id());
+            }
+            return redirect()->route('dashboard');
+        }
+
+
         /**
          * Show the form for creating a new resource.
          */
@@ -38,15 +49,6 @@
             //
         }
 
-        public function markAsFavourite(Request $request, Post $post)
-        {
-            if (!auth()->user()->favouritePosts->contains($post->id)) {
-                $post->usersWhoMarkAsAFavourite()->attach(auth()->id());
-            } else {
-                $post->usersWhoMarkAsAFavourite()->detach(auth()->id());
-            }
-            return redirect()->route('dashboard');
-        }
 
         /**
          * Display the specified resource.

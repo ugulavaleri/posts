@@ -22,7 +22,14 @@
         return view('welcome');
     });
 
-    Route::group(['middleware' => 'auth'], function () {
+    Route::resource('posts', PostController::class)
+        ->name('index', 'dashboard');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
         Route::post('/posts/{post}/comment/{comment}', [CommentController::class, 'toggleLike'])
             ->name('comments.likeComment');
         Route::get('/comments/{comment}/likes', [CommentController::class, 'showLikes'])
@@ -41,16 +48,6 @@
             ->name('posts.markAsFavourite');
         Route::get('/favourite-posts', [UserController::class, 'myFavouritePosts'])
             ->name('users.myFavouritePosts');
-    });
-
-    Route::resource('posts', PostController::class)
-        ->name('index', 'dashboard');
-
-
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
     require __DIR__ . '/auth.php';

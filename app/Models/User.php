@@ -59,7 +59,7 @@
 
         public function likedComments()
         {
-            return $this->belongsToMany(Comment::class, 'comment_user', 'user_id', 'comment_id');
+            return $this->belongsToMany(Comment::class);
         }
 
         // followers, who follow current authenticated user.

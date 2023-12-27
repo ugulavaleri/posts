@@ -8,9 +8,4 @@
     class Follower extends Model
     {
         use HasFactory;
-
-        public function followers()
-        {
-            return $this->belongsToMany(Follower::class, 'follower_user', 'follower_id', 'user_id');
-        }
     }

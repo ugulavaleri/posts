@@ -25,6 +25,6 @@ class Comment extends Model
     }
 
     public function isLikedByCurrentUser(){
-        return $this->usersWhoLikeThisComment->contains(auth()->id());
+        return auth()->user()->likedComments->contains($this->id);
     }
 }
