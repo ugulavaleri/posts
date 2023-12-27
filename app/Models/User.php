@@ -43,19 +43,18 @@
             'password' => 'hashed',
         ];
 
-        public function favouritePosts()
-        {
-            return $this->belongsToMany(Post::class, 'favourites');
-        }
-
         public function posts()
         {
             return $this->hasMany(Post::class);
         }
-
         public function comments()
         {
             return $this->hasMany(Comment::class);
+        }
+
+        public function favouritePosts()
+        {
+            return $this->belongsToMany(Post::class, 'favourites');
         }
 
         public function likedComments()
@@ -63,18 +62,19 @@
             return $this->belongsToMany(Comment::class, 'comment_user', 'user_id', 'comment_id');
         }
 
-        // followers
+        // followers, who follow current authenticated user.
         public function followers()
         {
             return $this->belongsToMany(User::class, 'follower_user', 'user_id', 'follower_id');
         }
 
+        // people, who are followed by current authenticated user.
         public function followings()
         {
             return $this->belongsToMany(User::class, 'follower_user', 'follower_id', 'user_id');
         }
 
         public function haveAlreadyFollowed(){
-            return $this->followers->contains(auth()->id());
+            return auth()->user()->followings->contains($this->id);
         }
     }

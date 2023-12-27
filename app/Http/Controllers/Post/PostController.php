@@ -18,7 +18,7 @@
         public function index()
         {
             $posts = Post::with(['comments.user', 'user', 'usersWhoMarkAsAFavourite','comments.usersWhoLikeThisComment'])
-                ->get();
+                ->paginate(10);
             return view('posts.index', compact('posts'));
         }
 
@@ -38,17 +38,6 @@
             //
         }
 
-        public function storeComment(Request $request, Post $post)
-        {
-            $comment = $request->validate([
-                'comment' => ['required', 'string', 'max:1024']
-            ]);
-            $comment['user_id'] = auth()->id();
-            $post->comments()->create($comment);
-
-            return redirect()->route('dashboard');
-        }
-
         public function markAsFavourite(Request $request, Post $post)
         {
             if (!auth()->user()->favouritePosts->contains($post->id)) {
@@ -57,23 +46,6 @@
                 $post->usersWhoMarkAsAFavourite()->detach(auth()->id());
             }
             return redirect()->route('dashboard');
-        }
-
-        public function likeComment(Post $post, Comment $comment)
-        {
-            if (!auth()->user()->likedComments->contains($comment->id)) {
-                $comment->usersWhoLikeThisComment()->attach(auth()->id());
-            } else {
-                $comment->usersWhoLikeThisComment()->detach(auth()->id());
-            }
-            return redirect()->route('dashboard');
-        }
-
-        public function usersWhoLikeComment(Comment $comment){
-//            dd($comment);
-            return view('comments.index', [
-                'comment' => $comment
-            ]);
         }
 
         /**

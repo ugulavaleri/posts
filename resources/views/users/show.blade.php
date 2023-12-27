@@ -15,7 +15,7 @@
                 <p class="text-slate-50 mb-3">Email: <span class="text-xs">{{ $user->email }}</span></p>
                 <p class="text-slate-50">Number Of posts: <span class="text-xs">{{ $user->posts->count() }}</span></p>
                 @if(auth()->id() !== $user->id)
-                    <form action="{{ route('users.follow', $user) }}" method="POST" class="flex justify-end">
+                    <form action="{{ route('users.toggleFollow', $user) }}" method="POST" class="flex justify-end">
                         @csrf
                         @if($user->haveAlreadyFollowed())
                             <button class="text-gray-50 bg-amber-600 px-6 py-1 rounded-3xl mt-6 font-extrabold"><span>✔️</span> followed</button>

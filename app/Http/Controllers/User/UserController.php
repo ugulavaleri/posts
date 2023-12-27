@@ -43,6 +43,12 @@ class UserController extends Controller
         ]);
     }
 
+    public function myFavouritePosts(User $user){
+//        $favouritePosts = $user->favouritePosts();
+        $favouritePosts = auth()->user()->favouritePosts;
+        return view('users.myFavouritePosts',compact('favouritePosts'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
